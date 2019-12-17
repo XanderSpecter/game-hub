@@ -2,55 +2,83 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const autoprefixer = require('autoprefixer');
+const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
-module.exports = {
-    entry: {
-        app: './src/index.tsx',
-    },
-    output: {
-        path: path.join(__dirname, './dist'),
-        filename: '[name].[hash].js',
-    },
-    resolve: {
-        extensions: ['.ts', '.tsx', '.js'],
-    },
+module.exports = (env, argv = {}) => {
+    const isProd = argv.mode === 'production';
 
-    module: {
-        rules: [
-            {
-                test: /\.(ts|js)x?$/,
-                exclude: /node_modules/,
-                use: {
-                    loader: 'babel-loader'
+    const config = {
+        entry: {
+            app: './src/index.tsx',
+        },
+        output: {
+            path: path.join(__dirname, './dist'),
+            filename: '[name].[hash].js',
+        },
+        resolve: {
+            extensions: ['.ts', '.tsx', '.js'],
+        },
+        optimization: {
+            minimizer: [
+                new UglifyJsPlugin({
+                    sourceMap: !isProd,
+                    uglifyOptions: {
+                        warnings: false,
+                        mangle: true,
+                    },
+                }),
+                new OptimizeCssAssetsPlugin({
+                    cssProcessorOptions: { discardComments: { removeAll: true } },
+                    canPrint: true,
+                }),
+            ],
+        },
+        module: {
+            rules: [
+                {
+                    test: /\.(ts|js)x?$/,
+                    exclude: /node_modules/,
+                    use: {
+                        loader: 'babel-loader'
+                    },
                 },
-            },
-            {
-                test: /\.less/,
-                use: [
-                    MiniCssExtractPlugin.loader,
-                    'css-loader',
-                    'less-loader',
-                ],
-            },
-            {
-                test: /\.css/,
-                use: [MiniCssExtractPlugin.loader, 'css-loader'],
-            },
+                {
+                    test: /\.less/,
+                    use: [
+                        MiniCssExtractPlugin.loader,
+                        'css-loader',
+                        'less-loader',
+                        {
+                            loader: 'postcss-loader',
+                            options: {
+                                plugins: [
+                                    autoprefixer(),
+                                ],
+                                sourceMap: !isProd,
+                            },
+                        },
+                    ],
+                },
+            ]
+        },
+        plugins: [
+            new CleanWebpackPlugin(),
+            new MiniCssExtractPlugin({
+                filename: '[name].[hash].css',
+            }),
+            new HtmlWebpackPlugin({
+                files: {
+                    css: ['styles.[hash].css'],
+                    js: ['app.[hash].js'],
+                },
+                template: './src/index.html',
+                filename: './index.html',
+                inject: false,
+            }),
         ]
-    },
-    plugins: [
-        new CleanWebpackPlugin(),
-        new MiniCssExtractPlugin({
-            filename: '[name].[hash].css',
-        }),
-        new HtmlWebpackPlugin({
-            files: {
-                css: ['styles.[hash].css'],
-                js: ['app.[hash].js'],
-            },
-            template: './src/index.html',
-            filename: './index.html',
-            inject: false,
-        }),
-    ]
+    };
+
+    return config;
 };

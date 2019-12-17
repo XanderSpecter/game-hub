@@ -16,7 +16,10 @@
   "bugs": {
     "url": "https://github.com/XanderSpecter/game-hub/issues"
   },
-  "browserslist": "> 0.25%, not dead",
+  "browserslist": [
+    "last 3 version",
+    "ie 10"
+  ],
   "homepage": "https://github.com/XanderSpecter/game-hub#readme",
   "devDependencies": {
     "@babel/cli": "^7.7.5",
@@ -27,15 +30,24 @@
     "@babel/preset-env": "^7.7.6",
     "@babel/preset-react": "^7.7.4",
     "@babel/preset-typescript": "^7.7.4",
+    "@typescript-eslint/eslint-plugin": "^2.12.0",
+    "@typescript-eslint/parser": "^2.12.0",
+    "autoprefixer": "^9.7.3",
     "babel-loader": "^8.0.6",
     "clean-webpack-plugin": "^3.0.0",
     "css-loader": "^3.4.0",
     "eslint": "^6.7.2",
+    "eslint-config-prettier": "^6.7.0",
+    "eslint-plugin-react-hooks": "^2.3.0",
     "html-webpack-plugin": "^3.2.0",
     "less": "^3.10.3",
     "less-loader": "^5.0.0",
     "mini-css-extract-plugin": "^0.8.2",
+    "optimize-css-assets-webpack-plugin": "^5.0.3",
+    "postcss-loader": "^3.0.0",
+    "prettier": "^1.19.1",
     "typescript": "^3.7.3",
+    "uglifyjs-webpack-plugin": "^2.2.0",
     "webpack": "^4.41.3",
     "webpack-cli": "^3.3.10",
     "webpack-dev-server": "^3.9.0"
