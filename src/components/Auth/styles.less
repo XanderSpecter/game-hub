@@ -1,0 +1,49 @@
+.game-hub__auth {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    height: 100vh;
+
+    padding: 8px;
+
+    &--form-wrapper {
+        width: 100%;
+        max-width: 500px;
+    }
+
+    &--header.MuiTypography-root {
+        margin-bottom: 16px;
+    }
+
+    &--input.MuiFormControl-root {
+        width: 100%;
+
+        margin-bottom: 16px;
+    }
+
+    &--submit.MuiButtonBase-root {
+        margin-top: 16px;
+    }
+
+    &--error-message {
+        position: fixed;
+        width: 100%;
+        max-width: 500px;
+        color: #721c24;
+        background-color: #f8d7da;
+        border-color: #f5c6cb;
+        padding: 16px;
+        height: 64px;
+        top: -64px;
+        transition: all ease-in-out 0.2s;
+        display: flex;
+        align-items: center;
+
+        &.show {
+            top: 0;
+        }
+    }
+}

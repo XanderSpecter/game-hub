@@ -64,6 +64,14 @@ module.exports = (env, argv = {}) => {
                 },
             ]
         },
+        devServer: {
+            proxy: {
+                '/api': {
+                    target: 'http://xspecter.ru/game_hub',
+                    logLevel: 'debug',
+                }
+            },
+        },
         plugins: [
             new CleanWebpackPlugin(),
             new MiniCssExtractPlugin({
