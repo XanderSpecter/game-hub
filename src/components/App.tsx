@@ -6,9 +6,10 @@ import './styles.less';
 
 import { User } from '../models/User';
 import { Loader } from './Loader';
-import { getCookie } from '../helpers/cookies';
+import { getCookie, deleteCookie } from '../helpers/cookies';
 import { authUserById } from '../helpers/api';
 import { Auth } from './Auth';
+import { Games } from './Games';
 
 const App = () => {
 	const [activeUser, setActiveUser] = useState<User>(null);
@@ -33,15 +34,20 @@ const App = () => {
 		}
 	};
 
+	const onLogOut = () => {
+		deleteCookie('user');
+		setActiveUser(null);
+	};
+
 	useEffect(() => {
 		checkUserAuth();
 	}, []);
 
 	return (
 		<>
-			<Auth onSuccess={(user: User) => console.log(user)}/>
 			{/* {(isFetching && !activeUser) && <Loader />} */}
-			{/* {(!isFetching && !activeUser) && <Auth />} */}
+			{/* {(!isFetching && !activeUser) && <Auth onSuccess={(user: User) => setActiveUser(user)} />} */}
+			<Games user={activeUser} onLogOut={onLogOut}/>
 		</>
 	);
 };

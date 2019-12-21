@@ -1,0 +1,64 @@
+.game-hub__game-card {
+    width: 100%;
+    padding: 16px;
+    margin-bottom: 16px;
+
+    display: flex;
+    flex-wrap: wrap;
+
+    &--main-info {
+        flex-grow: 1;
+    }
+
+    &--header {
+        font-size: 1.5rem;
+        font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+        font-weight: 400;
+        line-height: 1.334;
+        letter-spacing: 0em;
+        min-width: 265px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    &--info {
+        margin-top: 8px;
+        display: flex;
+    }
+
+    &--user {
+        margin-right: 16px;
+        display: flex;
+        align-items: center;
+    }
+
+    &--platforms {
+        display: flex;
+    }
+
+    &--platform {
+        width: 24px;
+        height: 24px;
+
+        margin-right: 8px;
+
+        svg {
+            width: 24px;
+            height: 24px;
+        }
+    }
+
+    &--rating {
+        display: flex;
+        align-items: center;
+
+        .MuiTypography-root {
+            margin: 0;
+        }
+    }
+
+    &--vote-controls {
+        margin-left: 8px;
+    }
+}

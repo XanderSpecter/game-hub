@@ -51,7 +51,7 @@ export const getData = async <T>(url: string) => {
     } catch(e) {
         return {
             status: 500,
-            error: 'Что-то пошло не так',
+            error: 'Ошибка загрузки данных',
         } as GetResult<T>;
     }
 };

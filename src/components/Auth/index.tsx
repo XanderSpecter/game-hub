@@ -4,9 +4,11 @@ import { TextField, Typography, FormControlLabel, Checkbox, Button } from '@mate
 
 import uuid from 'uuid/v4';
 
-import './styles.less';
 import { loginUser } from '../../helpers/api';
 import { User } from '../../models/User';
+
+import './styles.less';
+import { setCookie } from '../../helpers/cookies';
 
 interface AuthProps {
     onSuccess: (user: User) => void;
@@ -19,6 +21,7 @@ export const Auth = (props: AuthProps) => {
     const [nameError, setNameError] = useState('');
     const [passwordError, setPasswordError] = useState('');
 
+    const [isFetching, setIsFetching] = useState(false);
     const [fetchError, setFetchError] = useState('');
 
     const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -27,6 +30,7 @@ export const Auth = (props: AuthProps) => {
         setFetchError('');
 
         if (name && password) {
+            setIsFetching(true);
             const form = new FormData();
 
             form.append('name', name);
@@ -37,13 +41,18 @@ export const Auth = (props: AuthProps) => {
                 form.append('id', uuid());
             }
 
-            const user = await loginUser(form);
+            const userData = await loginUser(form);
 
-            if (user.error) {
-                setFetchError(user.error);
+            if (userData.error) {
+                setFetchError(userData.error);
+                setIsFetching(false);
                 setTimeout(() => {
                     setFetchError('');
                 }, 3000);
+            } else if (userData.user) {
+                setIsFetching(false);
+                setCookie('user', userData.user.id, 2400);
+                props.onSuccess(userData.user);
             }
 
             return;
@@ -82,6 +91,7 @@ export const Auth = (props: AuthProps) => {
                         }}
                         helperText={nameError}
                         error={Boolean(nameError)}
+                        disabled={isFetching}
                     />
                     <TextField
                         className="game-hub__auth--input"
@@ -97,6 +107,7 @@ export const Auth = (props: AuthProps) => {
                         }}
                         helperText={passwordError}
                         error={Boolean(passwordError)}
+                        disabled={isFetching}
                     />
                     <FormControlLabel
                         className="game-hub__auth--input"
@@ -107,6 +118,7 @@ export const Auth = (props: AuthProps) => {
                                 color="primary"
                                 checked={isNewUser}
                                 onChange={() => setIsNewUser(!isNewUser)}
+                                disabled={isFetching}
                             />
                         }
                         label="Новый пользователь"
@@ -117,6 +129,7 @@ export const Auth = (props: AuthProps) => {
                             type="submit"
                             variant="contained"
                             color="primary"
+                            disabled={isFetching}
                         >
                             {isNewUser ? 'Регистрация' : 'Авторизация'}
                         </Button>
