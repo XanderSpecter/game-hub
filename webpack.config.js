@@ -64,31 +64,6 @@ module.exports = (env, argv = {}) => {
                 },
             ]
         },
-        devServer: {
-            proxy: {
-                '/api': {
-                    target: 'http://xspecter.ru/',
-                    secure: false,
-                    logLevel: 'debug',
-                    ignorePath: false,
-                    changeOrigin: true,
-                },
-            },
-            contentBase: path.join(__dirname, '/'),
-            compress: true,
-            https: false,
-            host: '0.0.0.0',
-            port: 9004,
-            overlay: true,
-            publicPath: '/',
-            historyApiFallback: {
-                rewrites: [
-                    { from: '/', to: '/index.html' },
-                ],
-            },
-            disableHostCheck: true,
-            writeToDisk: true,
-        },
         plugins: [
             new CleanWebpackPlugin(),
             new MiniCssExtractPlugin({

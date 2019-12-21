@@ -1,30 +1,18 @@
 {
 	"compilerOptions": {
-		"target": "esnext",
 		"outDir": "./dist/",
-		"strictNullChecks": true,
-		"moduleResolution": "node",
-		"noEmit": true,
-		"strict": true,
-		"esModuleInterop": true,
+		"module": "es6",
+		"target": "esnext",
 		"jsx": "react",
-		"baseUrl": "./src",
+		"moduleResolution": "node",
+		"allowUnreachableCode": false,
+		"removeComments": true,
+		"allowSyntheticDefaultImports": true,
+		"sourceMap": false,
 		"lib": [
 			"es2018",
 			"dom.iterable",
 			"dom"
-		],
-		"module": "es6",
-		"removeComments": true,
-		"alwaysStrict": true,
-		"allowUnreachableCode": false,
-		"noImplicitAny": true,
-		"noImplicitThis": true,
-		"noUnusedLocals": true,
-		"noUnusedParameters": true,
-		"noImplicitReturns": true,
-		"noFallthroughCasesInSwitch": true,
-		"forceConsistentCasingInFileNames": true,
-		"importHelpers": true
-	},
+		]
+	}
 }
