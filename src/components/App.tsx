@@ -18,11 +18,11 @@ const App = () => {
 	const checkUserAuth = async () => {
 		const userIdFromCookies = getCookie('user');
 
-		// if (!userIdFromCookies) {
-		// 	setIsFetching(false);
+		if (!userIdFromCookies) {
+			setIsFetching(false);
 
-		// 	return;
-		// }
+			return;
+		}
 
 		const authResult = await authUserById(userIdFromCookies);
 
@@ -45,13 +45,9 @@ const App = () => {
 
 	return (
 		<>
-			{/* {(isFetching && !activeUser) && <Loader />} */}
-			{/* {(!isFetching && !activeUser) && <Auth onSuccess={(user: User) => setActiveUser(user)} />} */}
-			<Games user={{
-				name: 'ololo',
-				password: '123',
-				id: '4',
-			}} onLogOut={onLogOut}/>
+			{(isFetching && !activeUser) && <Loader />}
+			{(!isFetching && !activeUser) && <Auth onSuccess={(user: User) => setActiveUser(user)} />}
+			{(!isFetching && activeUser) && <Games user={activeUser} onLogOut={onLogOut}/>}
 		</>
 	);
 };
