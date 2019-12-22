@@ -36,8 +36,8 @@ export const AddGameFrom = (props: AddGameFromProps) => {
 
         const newGame: Game = {
             name,
-            rating: 1,
-            votes: [props.user.id],
+            rating: 0,
+            votes: [],
             addedBy: props.user.name,
             id: uuid(),
             platforms: [],
