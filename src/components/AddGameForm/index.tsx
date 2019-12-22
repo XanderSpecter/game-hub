@@ -77,6 +77,8 @@ export const AddGameFrom = (props: AddGameFromProps) => {
                 url: other,
             } as PlatformLink);
         }
+
+        props.onSubmit(newGame);
     };
 
     const checkGame = async (gameName: string) => {

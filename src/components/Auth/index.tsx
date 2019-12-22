@@ -4,7 +4,7 @@ import { TextField, Typography, FormControlLabel, Checkbox, Button } from '@mate
 
 import uuid from 'uuid/v4';
 
-import { loginUser } from '../../helpers/api';
+import { loginUser, LoginRequestParams } from '../../helpers/api';
 import { User } from '../../models/User';
 
 import './styles.less';
@@ -31,17 +31,17 @@ export const Auth = (props: AuthProps) => {
 
         if (name && password) {
             setIsFetching(true);
-            const form = new FormData();
-
-            form.append('name', name);
-            form.append('password', password);
+            const params: LoginRequestParams = {
+                name,
+                password,
+            };
 
             if (isNewUser) {
-                form.append('register', 'true');
-                form.append('id', uuid());
+                params.register = 'true';
+                params.id = uuid();
             }
 
-            const userData = await loginUser(form);
+            const userData = await loginUser(params);
 
             if (userData.error) {
                 setFetchError(userData.error);

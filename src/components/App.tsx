@@ -10,6 +10,7 @@ import { getCookie, deleteCookie } from '../helpers/cookies';
 import { authUserById } from '../helpers/api';
 import { Auth } from './Auth';
 import { Games } from './Games';
+import { CookiePanel } from './CookiePanel';
 
 const App = () => {
 	const [activeUser, setActiveUser] = useState<User>(null);
@@ -46,8 +47,13 @@ const App = () => {
 	return (
 		<>
 			{(isFetching && !activeUser) && <Loader />}
-			{(!isFetching && !activeUser) && <Auth onSuccess={(user: User) => setActiveUser(user)} />}
-			{(!isFetching && activeUser) && <Games user={activeUser} onLogOut={onLogOut}/>}
+			{!isFetching &&
+				<>
+					{!activeUser && <Auth onSuccess={(user: User) => setActiveUser(user)} />}
+					{activeUser && <Games user={activeUser} onLogOut={onLogOut}/>}
+					<CookiePanel />
+				</>
+			}
 		</>
 	);
 };

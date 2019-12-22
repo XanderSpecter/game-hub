@@ -1,0 +1,27 @@
+.game-hub__cookie {
+    width: 100%;
+    padding: 16px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    position: fixed;
+    bottom: 0;
+
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+
+    z-index: 100500;
+
+    .pr-64 {
+        padding-right: 64px;
+        position: relative;
+    }
+
+    &--close.MuiFab-root {
+        position: absolute;
+        top: calc(50% - 28px);
+        right: 0;
+    }
+}

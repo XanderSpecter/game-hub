@@ -19,39 +19,22 @@ export const Games = (props: GamesProps) => {
     const [isFetching, setIsFetching] = useState(true);
     const [fetchError, setFetchError] = useState('');
     const [showAddForm, setShowAddForm] = useState(false);
-    const [gameList, setGameList] = useState<Game[]>([
-        {
-            name: 'Star Wars Battlefront',
-            id: '123',
-            platforms: [
-                {
-                    name: 'origin',
-                    url: 'ololo',
-                },
-                {
-                    name: 'other',
-                    url: 'ololo',
-                },
-            ],
-            addedBy: 'Name',
-            rating: 2,
-            votes: []
-        }
-    ]);
+    const [gameList, setGameList] = useState<Game[]>([]);
 
     const getGamesList = async () => {
         const gameData = await getData<Game[]>('/games');
 
         if (gameData.error) {
-            // setFetchError(gameData.error);
-            setIsFetching(false);
+            setFetchError(gameData.error);
         } else if (gameData.data && gameData.data.length) {
             setGameList(gameData.data.sort((a, b) => b.rating - a.rating));
-            setIsFetching(false);
         }
+
+        setIsFetching(false);
     };
 
     const onGameUpdate = async (newGame: Game) => {
+        setIsFetching(true);
         const gameData = await getData<Game[]>('/games');
 
         if (gameData.data) {
@@ -67,6 +50,8 @@ export const Games = (props: GamesProps) => {
         } else {
             setFetchError(gameData.error || 'Проблемы на сервере');
         }
+        setIsFetching(false);
+        setShowAddForm(false);
     };
 
     useEffect(() => {
@@ -77,7 +62,7 @@ export const Games = (props: GamesProps) => {
         <div className="game-hub__games">
             <AppToolbar
                 onLogOut={props.onLogOut}
-                showAddButton={!showAddForm}
+                showAddButton={!showAddForm && !isFetching}
                 onAddClick={() => setShowAddForm(true)}
             />
             {isFetching && <Loader />}
@@ -88,7 +73,7 @@ export const Games = (props: GamesProps) => {
                             {fetchError}
                         </Typography>
                     }
-                    {!fetchError && Boolean(gameList.length) &&
+                    {!fetchError &&
                         gameList.map((game) => (
                             <GameCard
                                 key={game.id}

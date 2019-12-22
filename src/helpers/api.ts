@@ -1,7 +1,6 @@
 import { User } from '../models/User';
 
 const headers = new Headers({
-    'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': '*',
     'Content-Type': 'application/json',
     'Cache-Control': 'no-cache',
@@ -29,6 +28,13 @@ interface UserResult {
     error?: string;
 }
 
+export interface LoginRequestParams {
+    name: string,
+    password: string,
+    register?: string,
+    id?: string,
+}
+
 export const getData = async <T>(url: string) => {
     const options: RequestInit = {
         headers,
@@ -36,7 +42,7 @@ export const getData = async <T>(url: string) => {
     };
 
     try {
-        const response = await fetch(`./api${url}`, options);
+        const response = await fetch(`./api${url}/`, options);
 
         const text = await response.text();
         const data: T = JSON.parse(text);
@@ -64,7 +70,7 @@ export const uploadData = async (url: string, body?: BodyInit) => {
     };
 
     try {
-        const response = await fetch(`./api${url}`, options);
+        const response = await fetch(`./api${url}/`, options);
 
         const text = await response.text();
         const data: ResultStatus = JSON.parse(text);
@@ -85,9 +91,11 @@ export const uploadData = async (url: string, body?: BodyInit) => {
 };
 
 export const authUserById = async (id: string) => {
-    const body = new FormData();
-    body.append('id', id);
-    body.append('type', 'ID');
+    const params = {
+        id,
+    };
+
+    const body = JSON.stringify(params);
 
     const options: RequestInit = {
         headers,
@@ -95,7 +103,7 @@ export const authUserById = async (id: string) => {
         method: 'POST',
     };
     try {
-        const response = await fetch('./api/users', options);
+        const response = await fetch('./api/users/?type=ID', options);
 
         const text = await response.text();
         const user: User = JSON.parse(text);
@@ -115,8 +123,8 @@ export const authUserById = async (id: string) => {
     }
 };
 
-export const loginUser = async (body: FormData) => {
-    body.append('type', 'NAME');
+export const loginUser = async (params: LoginRequestParams) => {
+    const body = JSON.stringify(params);
 
     const options: RequestInit = {
         headers,
@@ -124,7 +132,7 @@ export const loginUser = async (body: FormData) => {
         method: 'POST',
     };
     try {
-        const response = await fetch('./api/users', options);
+        const response = await fetch('./api/users/?type=NAME', options);
 
         const text = await response.text();
 

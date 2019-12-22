@@ -19,7 +19,7 @@ export const AppToolbar = (props: AppToolbarProps) => (
         <AppBar position="fixed">
             <Toolbar>
                 <Typography variant="h6" className="game-hub__menu-header">
-                    Game Hub
+                    <a href="https://discordapp.com/invite/hq48JZk" target="blank">Discord Server</a>
                 </Typography>
                 {props.showAddButton &&
                     <Button
