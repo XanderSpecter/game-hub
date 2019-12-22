@@ -1,3 +1,5 @@
+@import '../media.less';
+
 .game-hub__game-card {
     width: 100%;
     padding: 16px;
@@ -53,12 +55,18 @@
         display: flex;
         align-items: center;
 
+        @media @sm {
+            margin-top: 8px;
+            width: 100%;
+            justify-content: space-between;
+        }
+
         .MuiTypography-root {
             margin: 0;
         }
     }
 
     &--vote-controls {
-        margin-left: 8px;
+        margin-left: 16px;
     }
 }

@@ -69,7 +69,7 @@ export const Auth = (props: AuthProps) => {
 
     return (
         <div className="game-hub__auth">
-            <div className={`game-hub__auth--error-message ${Boolean(fetchError) ? 'show' : ''}`}>
+            <div className={`game-hub__auth--error-message ${fetchError ? 'show' : ''}`}>
                 {fetchError}
             </div>
             <div className="game-hub__auth--form-wrapper">
@@ -137,5 +137,5 @@ export const Auth = (props: AuthProps) => {
                 </form>
             </div>
         </div>
-    )
+    );
 };

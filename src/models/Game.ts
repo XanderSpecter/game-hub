@@ -1,15 +1,15 @@
-type Platform = 'origin' | 'steam' | 'epic' | 'torrent';
+type Platform = 'origin' | 'steam' | 'epic' | 'torrent' | 'other';
 
-interface Vote {
-    userId: string;
-    value: number;
+export interface PlatformLink {
+    name: Platform;
+    url: string;
 }
 
 export interface Game {
     name: string;
     id: string;
-    platforms: Platform[];
+    platforms: PlatformLink[];
     addedBy: string;
-    votes: Vote[];
+    votes: string[];
     rating: number;
 }

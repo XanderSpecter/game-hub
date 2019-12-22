@@ -47,7 +47,11 @@ const App = () => {
 		<>
 			{/* {(isFetching && !activeUser) && <Loader />} */}
 			{/* {(!isFetching && !activeUser) && <Auth onSuccess={(user: User) => setActiveUser(user)} />} */}
-			<Games user={activeUser} onLogOut={onLogOut}/>
+			<Games user={{
+				name: 'ololo',
+				password: '123',
+				id: '4',
+			}} onLogOut={onLogOut}/>
 		</>
 	);
 };

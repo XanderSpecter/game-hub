@@ -11,6 +11,7 @@ import './styles.less';
 interface AppToolbarProps {
     onLogOut: () => void;
     onAddClick: () => void;
+    showAddButton: boolean;
 }
 
 export const AppToolbar = (props: AppToolbarProps) => (
@@ -20,12 +21,14 @@ export const AppToolbar = (props: AppToolbarProps) => (
                 <Typography variant="h6" className="game-hub__menu-header">
                     Game Hub
                 </Typography>
-                <Button
-                    color="inherit"
-                    onClick={props.onAddClick}
-                >
-                    <AddIcon />
-                </Button>
+                {props.showAddButton &&
+                    <Button
+                        color="inherit"
+                        onClick={props.onAddClick}
+                    >
+                        <AddIcon />
+                    </Button>
+                }
                 <Button
                     color="inherit"
                     onClick={props.onLogOut}

@@ -4,10 +4,11 @@ import { Container, Typography } from '@material-ui/core';
 import { Loader } from '../Loader';
 import { User } from '../../models/User';
 import { Game } from '../../models/Game';
-import { getData } from '../../helpers/api';
+import { getData, uploadData } from '../../helpers/api';
+import { GameCard } from '../GameCard';
+import { AddGameFrom } from '../AddGameForm';
 
 import './styles.less';
-import { GameCard } from '../GameCard';
 
 interface GamesProps {
     onLogOut: () => void;
@@ -17,19 +18,24 @@ interface GamesProps {
 export const Games = (props: GamesProps) => {
     const [isFetching, setIsFetching] = useState(true);
     const [fetchError, setFetchError] = useState('');
+    const [showAddForm, setShowAddForm] = useState(false);
     const [gameList, setGameList] = useState<Game[]>([
         {
             name: 'Star Wars Battlefront',
             id: '123',
-            platforms: ['origin', 'steam', 'torrent', 'epic'],
+            platforms: [
+                {
+                    name: 'origin',
+                    url: 'ololo',
+                },
+                {
+                    name: 'other',
+                    url: 'ololo',
+                },
+            ],
             addedBy: 'Name',
             rating: 2,
-            votes: [
-                {
-                    userId: '123',
-                    value: -1,
-                }
-            ]
+            votes: []
         }
     ]);
 
@@ -45,6 +51,24 @@ export const Games = (props: GamesProps) => {
         }
     };
 
+    const onGameUpdate = async (newGame: Game) => {
+        const gameData = await getData<Game[]>('/games');
+
+        if (gameData.data) {
+            const games = gameData.data.filter(game => game.id !== newGame.id);
+
+            const uploadResult = await uploadData('/games', JSON.stringify([...games, newGame]));
+
+            if (uploadResult.success) {
+                getGamesList();
+            } else {
+                setFetchError(gameData.error || 'Проблемы на сервере');
+            }
+        } else {
+            setFetchError(gameData.error || 'Проблемы на сервере');
+        }
+    };
+
     useEffect(() => {
 		getGamesList();
 	}, []);
@@ -53,21 +77,36 @@ export const Games = (props: GamesProps) => {
         <div className="game-hub__games">
             <AppToolbar
                 onLogOut={props.onLogOut}
-                onAddClick={() => {}}
+                showAddButton={!showAddForm}
+                onAddClick={() => setShowAddForm(true)}
             />
-            <Container>
-                {isFetching && <Loader />}
-                {Boolean(fetchError) &&
-                    <Typography variant="h6" color="error" className="game-hub__games--error">
-                        {fetchError}
-                    </Typography>
-                }
-                {Boolean(gameList.length) &&
-                    gameList.map((game) => (
-                        <GameCard key={game.id} game={{...game}} user={props.user} />
-                    ))
-                }
-            </Container>
+            {isFetching && <Loader />}
+            {!isFetching && !showAddForm &&
+                <Container>
+                    {Boolean(fetchError) &&
+                        <Typography variant="h6" color="error" className="game-hub__games--error">
+                            {fetchError}
+                        </Typography>
+                    }
+                    {!fetchError && Boolean(gameList.length) &&
+                        gameList.map((game) => (
+                            <GameCard
+                                key={game.id}
+                                game={{...game}}
+                                user={props.user}
+                                onVote={onGameUpdate}
+                            />
+                        ))
+                    }
+                </Container>
+            }
+            {!isFetching && showAddForm &&
+                <AddGameFrom
+                    onSubmit={onGameUpdate}
+                    onCancel={() => setShowAddForm(false)}
+                    user={props.user}
+                />
+            }
         </div>
     );
 };

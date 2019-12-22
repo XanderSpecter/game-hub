@@ -36,7 +36,7 @@ export const getData = async <T>(url: string) => {
     };
 
     try {
-        const response = await fetch(`/api${url}`, options);
+        const response = await fetch(`./api${url}`, options);
 
         const text = await response.text();
         const data: T = JSON.parse(text);
@@ -64,7 +64,7 @@ export const uploadData = async (url: string, body?: BodyInit) => {
     };
 
     try {
-        const response = await fetch(`/api${url}`, options);
+        const response = await fetch(`./api${url}`, options);
 
         const text = await response.text();
         const data: ResultStatus = JSON.parse(text);
@@ -95,7 +95,7 @@ export const authUserById = async (id: string) => {
         method: 'POST',
     };
     try {
-        const response = await fetch('/api/users', options);
+        const response = await fetch('./api/users', options);
 
         const text = await response.text();
         const user: User = JSON.parse(text);
@@ -124,7 +124,7 @@ export const loginUser = async (body: FormData) => {
         method: 'POST',
     };
     try {
-        const response = await fetch('/api/users', options);
+        const response = await fetch('./api/users', options);
 
         const text = await response.text();
 

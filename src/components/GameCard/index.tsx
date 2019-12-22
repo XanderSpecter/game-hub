@@ -1,20 +1,38 @@
 import React from 'react';
 import { Game } from '../../models/Game';
 import { User } from '../../models/User';
-import { Paper, Typography, Button } from '@material-ui/core';
+import { Paper, Typography, Fab } from '@material-ui/core';
 
-import './styles.less';
 import { EpicIcon, OriginIcon, SteamIcon, TorrentIcon } from '../Icons';
 import ThumbUpOutlinedIcon from '@material-ui/icons/ThumbUpOutlined';
-import ThumbDownOutlinedIcon from '@material-ui/icons/ThumbDownOutlined';
+import CloseIcon from '@material-ui/icons/Close';
+import GetAppIcon from '@material-ui/icons/GetApp';
+
+import './styles.less';
 
 interface GameCardProps {
     game: Game;
     user: User;
+    onVote: (game: Game) => void;
 }
 
 export const GameCard = (props: GameCardProps) => {
-    const { game } = props;
+    const { game, user } = props;
+
+    const isVotedByUser = game.votes.includes(user.id);
+
+    const onVote = () => {
+        const newGame: Game = {...game};
+        if (!isVotedByUser) {
+            newGame.rating = game.rating + 1;
+            newGame.votes = [...game.votes, user.id];
+        } else {
+            newGame.rating = game.rating - 1;
+            newGame.votes = [...game.votes].filter(vote => vote !== user.id);
+        }
+
+        props.onVote(newGame);
+    };
 
     return (
         <Paper className="game-hub__game-card">
@@ -29,18 +47,21 @@ export const GameCard = (props: GameCardProps) => {
                     <div className="game-hub__game-card--platforms">
                         {
                             game.platforms.map(platform => (
-                                <div key={`${game.id}-${platform}`} className="game-hub__game-card--platform">
-                                    {platform === 'epic' &&
-                                        <EpicIcon />
+                                <div key={`${game.id}-${platform.name}`} className="game-hub__game-card--platform">
+                                    {platform.name === 'epic' &&
+                                        <a href={platform.url} target="blank"><EpicIcon /></a>
                                     }
-                                    {platform === 'origin' &&
-                                        <OriginIcon />
+                                    {platform.name === 'origin' &&
+                                        <a href={platform.url} target="blank"><OriginIcon /></a>
                                     }
-                                    {platform === 'steam' &&
-                                        <SteamIcon />
+                                    {platform.name === 'steam' &&
+                                        <a href={platform.url} target="blank"><SteamIcon /></a>
                                     }
-                                    {platform === 'torrent' &&
-                                        <TorrentIcon />
+                                    {platform.name === 'torrent' &&
+                                        <a href={platform.url} target="blank"><TorrentIcon /></a>
+                                    }
+                                    {platform.name === 'other' &&
+                                        <a href={platform.url} target="blank"><GetAppIcon /></a>
                                     }
                                 </div>
                             ))
@@ -53,16 +74,14 @@ export const GameCard = (props: GameCardProps) => {
                     {game.rating}
                 </Typography>
                 <div className="game-hub__game-card--vote-controls">
-                    <Button
-                        color="primary"
+                    <Fab
+                        color={isVotedByUser ? 'secondary' : 'primary'}
+                        title={isVotedByUser ? 'Отменить голос' : 'Проголосовать'}
+                        onClick={onVote}
                     >
-                        <ThumbUpOutlinedIcon />
-                    </Button>
-                    <Button
-                        color="secondary"
-                    >
-                        <ThumbDownOutlinedIcon />
-                    </Button>
+                        {!isVotedByUser && <ThumbUpOutlinedIcon />}
+                        {isVotedByUser && <CloseIcon />}
+                    </Fab>
                 </div>
             </div>
         </Paper>
