@@ -89,7 +89,7 @@ export const Auth = (props: AuthProps) => {
                             setName(e.target.value);
                             setNameError('');
                         }}
-                        helperText={nameError}
+                        helperText={nameError || 'Используйте буквы латинского алфавита'}
                         error={Boolean(nameError)}
                         disabled={isFetching}
                     />
@@ -105,7 +105,7 @@ export const Auth = (props: AuthProps) => {
                             setPassword(e.target.value);
                             setPasswordError('');
                         }}
-                        helperText={passwordError}
+                        helperText={passwordError || 'В целях безопасности, используйте "не важный" пароль'}
                         error={Boolean(passwordError)}
                         disabled={isFetching}
                     />
