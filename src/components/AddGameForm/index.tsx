@@ -17,6 +17,7 @@ interface AddGameFromProps {
 export const AddGameFrom = (props: AddGameFromProps) => {
     const [name, setName] = useState('');
     const [nameError, setNameError] = useState('');
+    const [urlError, setUrlError] = useState('');
     const [steam, setSteam] = useState('');
     const [origin, setOrigin] = useState('');
     const [epic, setEpic] = useState('');
@@ -78,6 +79,12 @@ export const AddGameFrom = (props: AddGameFromProps) => {
             } as PlatformLink);
         }
 
+        if (newGame.platforms.length === 0) {
+            setUrlError('Нужно указать хотя бы одну ссылку');
+
+            return;
+        }
+
         props.onSubmit(newGame);
     };
 
@@ -116,13 +123,13 @@ export const AddGameFrom = (props: AddGameFromProps) => {
                         variant="outlined"
                         value={name}
                         onChange={onNameChange}
-                        helperText={nameError}
-                        error={Boolean(nameError)}
+                        helperText={`${nameError ? `${nameError}${urlError ? ', ' : ''}` : ''}${urlError}`}
+                        error={Boolean(nameError || urlError)}
                     />
                     <TextField
                         className="game-hub__add-game--input"
                         label="Сcылка Steam (если есть)"
-                        name="name"
+                        name="steam"
                         type="text"
                         variant="outlined"
                         value={steam}
@@ -133,7 +140,7 @@ export const AddGameFrom = (props: AddGameFromProps) => {
                     <TextField
                         className="game-hub__add-game--input"
                         label="Сcылка Origin (если есть)"
-                        name="name"
+                        name="origin"
                         type="text"
                         variant="outlined"
                         value={origin}
@@ -144,7 +151,7 @@ export const AddGameFrom = (props: AddGameFromProps) => {
                     <TextField
                         className="game-hub__add-game--input"
                         label="Сcылка Epic (если есть)"
-                        name="name"
+                        name="epic"
                         type="text"
                         variant="outlined"
                         value={epic}
@@ -155,7 +162,7 @@ export const AddGameFrom = (props: AddGameFromProps) => {
                     <TextField
                         className="game-hub__add-game--input"
                         label="Другой магазин или лаунчер (если есть)"
-                        name="name"
+                        name="other"
                         type="text"
                         variant="outlined"
                         value={other}
@@ -166,7 +173,7 @@ export const AddGameFrom = (props: AddGameFromProps) => {
                     <TextField
                         className="game-hub__add-game--input"
                         label="Торрент"
-                        name="name"
+                        name="torrent"
                         type="text"
                         variant="outlined"
                         value={torrent}
